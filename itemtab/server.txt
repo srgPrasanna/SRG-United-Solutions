@@ -1,0 +1,85 @@
+var express    = require("express");
+var mysql      = require('mysql');
+var bodyParser = require('body-parser');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : 'admin',
+  database : 'test'
+ });
+var app = express();
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(express.static('app'));
+app.get('/' ,function (req, res) {
+  res.sendFile( "app/index.html" );
+});
+app.post('/saveinfo', urlencodedParser, function (req, res) {
+  var response={
+  	Item_ID:req.query.id,
+  	Item_Name:req.query.name,
+  	Item_Type:req.query.type
+  };
+  	connection.query('INSERT INTO item_details SET ?',[response],function(err,result){
+  	if(result.affectedRows>0)
+      res.status(200).json({'returnval': "Saved!"});
+    else
+      res.status(200).json({'returnval': "Unable to save!"});
+    });
+});
+app.post('/searchinfo', urlencodedParser, function (req, res) {
+  var response={
+  	Item_ID:req.query.id
+  	/*Item_Name:req.query.name,
+  	Item_Type:req.query.type*/
+  };
+  	connection.query('Select * FROM item_details WHERE ?',[response],function(err,rows){
+  	if(rows.length>0)
+      res.status(200).json({'returnval': rows});
+    else{
+      res.status(200).json({'returnval': "Data not found!"});
+    }
+    });
+});
+// app.post('/logininfo', urlencodedParser, function (req, res) {
+//   var user={user_id:req.query.id};
+//   var pass={password:req.query.pwd};
+//   var qur="select * from login_details where ? and ?";
+//   	connection.query("SELECT * FROM login_details where user_id='"+req.query.id+"' and password='"+req.query.pwd+"'",function(err,rows){
+//   	if(rows.length>0)
+//       res.status(200).json({'returnval': "matching!"});
+//     else{
+// 		console.log(err);
+//       res.status(200).json({'returnval': "Invalid!"});
+// 	}
+//     });
+// });
+app.post('/simplesaveinfo', urlencodedParser, function (req, res) {
+
+  var response={
+  	name:req.query.Name,
+  	email:req.query.Email,
+	phone:req.query.Phone,
+    address:req.query.Address
+  };
+  console.log(response);
+
+  var n={name:req.query.email};
+    var p={name:req.query.password};
+
+  var qur="select * from info where ? and ?";
+
+  //connection.query(qur,[n,p],function(err,result){
+
+  	connection.query("SELECT * FROM info where emp_code='"+req.query.email+"' and emp_name='"+req.query.password+"'",function(err,rows){
+
+  	if(rows.length>0)
+    //Sending positive response(role name) back to the login card if it is valid user
+      res.status(200).json({'returnval': "matching!"});
+    else{
+		console.log(err);
+    //Sending error response
+      res.status(200).json({'returnval': "Invalid!"});
+	}
+    });
+});
+app.listen(4000);
