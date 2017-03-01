@@ -1,0 +1,49 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+
+<style>
+paper-input{
+width: 50%;
+margin: auto;
+}
+</style>
+<dom-module id="item-card">
+  <template>
+    <paper-card heading="Item Details" image="/images/image.jpg">
+      <div class="card-content">
+        <paper-input label="Item ID" value="{{iid}}" required auto-validate error-message="Enter the item id!"><iron-icon icon="search" suffix on-click="searchdb"></iron-icon></paper-input>
+        <paper-input label="Item Name" value="{{iname}}" required  auto-validate pattern="[a-zA-Z]*" error-message="letters only!"></paper-input>
+        <paper-dropdown-menu label="Item Type" value="{{itype}}">
+           <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedtype}}">
+             <paper-item>Select</paper-item>
+             <paper-item value="Mechanical">Mechanical</paper-item>
+             <paper-item value="Electrical">Electrical</paper-item>
+             <paper-item value="Electronics">Electronics</paper-item>
+           </paper-listbox>
+         </paper-dropdown-menu>
+      </div>
+      <!-- <div class="cafe-rating">
+        <iron-icon class="star" icon="star"></iron-icon>
+        <iron-icon class="star" icon="star"></iron-icon>
+        <iron-icon class="star" icon="star"></iron-icon>
+        <iron-icon class="star" icon="star"></iron-icon>
+        <iron-icon class="star" icon="star"></iron-icon>
+      </div> -->
+      <div class="card-actions">
+        <center><paper-button id="submit" on-click="insertdb">Save</paper-button></center>
+      <!-- <center><paper-button on-click="go">Buy Here</paper-button></center> -->
+      </div>
+    </paper-card>
+  </template>
+    <script>
+  Polymer({is:"item-card",
+  ready:function(){
+      }
+    });
+  </script>
+</dom-module>

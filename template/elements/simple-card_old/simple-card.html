@@ -1,0 +1,59 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/iron-pages/iron-pages.html">
+
+<dom-module id="simple-card">
+
+  <template>
+    <paper-input label="Name " value="{{name}}"></paper-input>
+    <paper-input label="Email Address" value="{{email}}"></paper-input>
+    <paper-input label="Phone Number" value="{{phone}}"></paper-input>
+    <paper-input label="Address" value="{{address}}"></paper-input>
+    <paper-button on-click="SimpleFnSave">Save</paper-button>
+    </template>
+  </template>
+  
+   <template>
+ <iron-ajax
+        method="post"
+        id="simple_cardajax"
+        url="{{simpleinfourl}}"
+        params="{{saveinfoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="simpleinfoResponse"
+        debounce-duration="300"
+        >
+        </template>
+  <script>
+ (function() {
+    'use strict';
+
+    Polymer({
+      is: 'simple-card',
+	  
+	   SimpleFnSave:function(){
+		   
+		   alert(1);
+		   
+        this.simpleinfourl="http://localhost:4000"+"/simplesaveinfo";
+        var obj={};
+        obj.name=this.name;
+        obj.email=this.email;
+        obj.address=this.phone;
+		obj.phone=this.address;
+		
+        this.saveinfoparam=obj;
+        this.$.saveinfoajax.generateRequest();
+      },
+      saveinfoResponse:function(e){
+        alert(e.detail.response.returnval);
+      }
+	  
+      
+    });
+ })();
+  </script>
+</dom-module>

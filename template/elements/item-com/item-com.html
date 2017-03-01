@@ -1,0 +1,46 @@
+<dom-module id="item-com">
+<style>
+.repeatcard{
+ @apply(--layout-vertical);
+}
+paper-input{
+margin:auto;
+width: 40%;
+}
+paper-button{
+margin-left: 5%;
+width: 30%;
+background-color: grey;
+margin-top: 2%;
+}
+paper-tabs,paper-tab{
+color: black;
+background-color:#B0BEC5;
+font-size: 15px;
+margin: auto;
+width: 50%;
+}
+</style>
+
+<template>
+  <paper-tabs selected="0">
+    <paper-tab on-click="Fnpage1">Item Details</paper-tab>
+  </paper-tabs>
+
+    <iron-pages selected="{{page}}" attr-for-selected="data-category">
+      <section data-category="item-det">
+        <item-det></item-det>
+      </section>
+	   </iron-pages>
+</template>
+
+  <script>
+    Polymer({is:"item-com",
+      ready:function(){
+      },
+	  Fnpage1:function(){
+		  this.page="item-det";
+	  }
+      });
+  </script>
+</dom-module>

@@ -1,0 +1,96 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+
+
+<dom-module id="sendsimple-card">
+
+  <template>
+  <ul> <a on-click="SimpleView"> view</a> </ul>
+    <paper-input label="Name" value="{{name}}"></paper-input>
+    <paper-input label="Email Address" value="{{email}}"></paper-input>
+    <paper-input label="Phone Number" value="{{phone}}"></paper-input>
+    <paper-input label="Address" value="{{address}}"></paper-input>
+    <paper-button on-click="SimpleFnSave">Save</paper-button>
+   
+   
+   
+    <div> Employee list: </div>
+    <template is="dom-repeat" items="{{employees}}" as="e">
+        <div>ID: <span>{{e.name}}</span></div>
+        <div>Name: <span>{{e.email}}</span></div>
+        <div>Address: <span>{{e.phone}}</span></div>
+    </template>
+   
+   
+ <iron-ajax
+        method="post"
+        id="simplecardajax"
+        url="{{simpleinfourl}}"
+        params="{{savesimpleinfoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="simpleinfoResponse"
+        debounce-duration="300">
+        
+        
+        
+         <iron-ajax
+        method="post"
+        id="simpleshowajax"
+        url="{{Showinfourl}}"
+        params="{{saveshowinfoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="ShowinfofoResponse"
+        debounce-duration="300">
+        
+        </template>
+  <script>
+	  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'sendsimple-card',
+	  
+	   SimpleFnSave:function(){
+		   
+        this.simpleinfourl="http://localhost:4000"+"/simplesaveinfo";
+		 
+        var obj={};
+        obj.Name=this.name;
+        obj.Email=this.email;
+        obj.Phone=this.phone;
+		obj.Address=this.address;
+		
+        this.savesimpleinfoparam=obj;
+        this.$.simplecardajax.generateRequest();
+      },
+      simpleinfoResponse:function(e){
+        alert(e.detail.response.returnval);
+      },
+	  
+	  
+      SimpleView: function(){
+		  //alert(1);
+		   this.Showinfourl="http://localhost:4000"+"/simpleshowinfo";
+	  	   this.$.simpleshowajax.generateRequest();
+	  },
+	  
+	   ShowinfoResponse:function(e){
+        var arr=e.detail.response.returnval;
+        alert(JSON.stringify(arr));
+        this.employees=arr;
+
+      },
+	  
+	  
+	  
+	  
+	  
+    });
+ })();
+ 
+  </script>
+</dom-module>

@@ -1,0 +1,32 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<dom-module id="card1-">
+<template>
+  <paper-card heading="Bakery 2" image="/images/image1.jpg">
+    <div class="card-content">
+      text goes here!
+    </div>
+    <div class="cafe-rating">
+      <iron-icon class="star" icon="star"></iron-icon>
+      <iron-icon class="star" icon="star"></iron-icon>
+      <iron-icon class="star" icon="star"></iron-icon>
+      <iron-icon class="star" icon="star"></iron-icon>
+      <iron-icon class="star" icon="star"></iron-icon>
+    </div>
+    <div class="card-actions">
+    <center><paper-button on-click="go">Buy Here</paper-button></center>
+    </div>
+  </paper-card>
+</template>
+<script>
+Polymer({is:"card1-",
+ready:function(){
+},
+go:function(){
+  location.href = 'https://www.polymer-project.org';
+}
+});
+</script>
+</dom-module>

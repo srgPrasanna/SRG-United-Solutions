@@ -1,0 +1,114 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/iron-pages/iron-pages.html">
+
+
+<dom-module id="add-card">
+  <template>
+
+ <!-- <u><a on-click="Fnview">View</a></u>
+  <!--<paper-button on-click="SimplePager">page </paper-button>
+  <paper-tabs id="plain-tabs" selected="0" no-bar>
+  <paper-tab on-click="SimplePager">ITEM ONE</paper-tab>
+
+</paper-tabs>
+
+   <iron-pages selected="{{page}}" attr-for-selected="data-category">
+    <section data-category="simple-card">
+      <simple-card></simple-card>
+    </section>
+    <section data-category="develope-com2">
+      <develope-com2></develope-com2>
+    </section>
+	</iron-pages>-->
+
+   <u><a on-click="Fnview">View</a></u>
+
+    <paper-input label="Emp Code" value="{{empcode}}"></paper-input>
+    <paper-input label="Emp Name" value="{{empname}}"></paper-input>
+    <paper-input label="Address" value="{{empaddress}}"></paper-input>
+    <paper-button on-click="FnSave">Save</paper-button>
+
+
+    <div> Employee list: </div>
+    <template is="dom-repeat" items="{{employees}}" as="e">
+        <div>ID: <span>{{e.emp_code}}</span></div>
+        <div>Name: <span>{{e.emp_name}}</span></div>
+        <div>Address: <span>{{e.emp_address}}</span></div>
+    </template>
+
+     <iron-ajax
+        method="post"
+        id="saveinfoajax"
+        url="{{saveinfourl}}"
+        params="{{saveinfoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="saveinfoResponse"
+        debounce-duration="300"
+        >
+        <iron-ajax
+           method="post"
+           id="readinfoajax"
+           url="{{readinfourl}}"
+           params="{{readinfoparam}}"
+           handle-as="json"
+           content-type="application/json"
+           on-response="readinfoResponse"
+           debounce-duration="300"
+           >
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'add-card',
+
+      FnSave:function(){
+
+        this.saveinfourl="http://localhost:4000"+"/saveinfo";
+        var obj={};
+        obj.code=this.empcode;
+        obj.name=this.empname;
+        obj.address=this.empaddress;
+        this.saveinfoparam=obj;
+        this.$.saveinfoajax.generateRequest();
+      },
+      saveinfoResponse:function(e){
+        alert(e.detail.response.returnval);
+      },
+
+      Fnview:function()
+      {
+        this.readinfourl="http://localhost:4000"+"/viewinfo";
+        // var obj={};
+        // obj.code=this.empcode;
+        // obj.name=this.empname;
+        // obj.address=this.empaddress;
+        // this.saveinfoparam=obj;
+        this.$.readinfoajax.generateRequest();
+      },
+      readinfoResponse:function(e){
+        var arr=e.detail.response.returnval;
+        alert(JSON.stringify(arr));
+        this.employees=arr;
+
+      },
+
+
+
+
+
+
+
+
+    });
+
+
+  })();
+  </script>
+</dom-module>

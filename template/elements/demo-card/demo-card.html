@@ -1,0 +1,52 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="sendsimple-card.html">
+<link rel="import" href="add-card.html">
+
+<dom-module id="demo-card">
+  <template>
+
+
+  <!--<paper-button on-click="SimplePager">page </paper-button>-->
+  <paper-tabs id="plain-tabs" selected="0" no-bar>
+  <paper-tab on-click="AddPager">TAB ONE</paper-tab>
+  <paper-tab on-click="SimplePager">ITEM TWO </paper-tab>
+
+
+</paper-tabs>
+
+   <iron-pages selected="{{page}}" attr-for-selected="data-category">
+    <section data-category="sendsimple-card">
+      <sendsimple-card></sendsimple-card>
+    </section>
+    <section data-category="add-card">
+      <add-card></add-card>
+    </section>
+	</iron-pages>
+
+
+
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'demo-card',
+
+	   AddPager: function(){
+		   this.page = "add-card";
+		  ///alert(1);
+	  },
+	  SimplePager: function(){
+		   this.page = "sendsimple-card";
+		  //alert(2);
+	  }
+    });
+  })();
+  </script>
+</dom-module>

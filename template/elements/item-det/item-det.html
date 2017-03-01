@@ -1,0 +1,108 @@
+<dom-module id="item-det">
+<style>
+.repeatcard{
+ @apply(--layout-vertical);
+}
+paper-input{
+width: 50%;
+margin: auto;
+}
+paper-dropdown-menu{
+width: 100%;
+}
+paper-listbox{
+width: 30%;
+}
+paper-button{
+width: 30%;
+background-color: grey;
+}
+</style>
+  <template>
+    <div id="new">
+   <paper-input label="Item ID" value="{{iid}}" required auto-validate error-message="Enter the item id!"><iron-icon icon="search" suffix on-click="searchdb"></iron-icon></paper-input>
+   <paper-input label="Item Name" value="{{iname}}" required  auto-validate pattern="[a-zA-Z]*" error-message="letters only!"></paper-input>
+   <paper-dropdown-menu label="Item Type" value="{{itype}}">
+      <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedtype}}">
+        <paper-item value="select">Select</paper-item>
+        <paper-item value="Mechanical">Mechanical</paper-item>
+        <paper-item value="Electrical">Electrical</paper-item>
+        <paper-item value="Electronics">Electronics</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+    <div><center><paper-button id="submit" on-click="insertdb">Save</paper-button></center></div>
+      <template is="dom-repeat" id="menu" items="{{menuItems}}">
+        <div>
+          <span>{{item.Item_ID}}</span>
+          <span>{{item.Item_Name}}</span>
+          <button on-click="order">submit</button>
+        </div>
+    </template>
+  <!--<template is="dom-repeat" items="{{info}}" as="e">
+      <div>Item ID:{{e.Item_ID}}</div>
+      <div>Item Name:{{e.Item_Name}}</div>
+      <div>Item Type:{{e.Item_Type}}</div>
+    </template>-->
+</div>
+  <iron-ajax
+        method="post"
+        id="saveinfoajax"
+        url="{{saveinfourl}}"
+        params="{{saveinfoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="saveinfoResponse"
+        debounce-duration="300">
+
+        <iron-ajax
+              method="post"
+              id="searchinfoajax"
+              url="{{saveinfourl}}"
+              params="{{searchinfoparam}}"
+              handle-as="json"
+              content-type="application/json"
+              on-response="searchinfoResponse"
+              debounce-duration="300">
+   </template>
+
+<script>
+    Polymer({
+      is: "item-det",
+	   ready:function(){
+      },
+      insertdb:function(){
+        this.saveinfourl="http://localhost:4000"+"/saveinfoitems";
+        var obj={};
+        obj.id=this.iid;
+        obj.name=this.iname;
+        obj.type=this.itype;
+        this.saveinfoparam=obj;
+        this.$.saveinfoajax.generateRequest();
+      },
+      saveinfoResponse:function(e){
+        alert(e.detail.response.returnval);
+      },
+
+     searchdb:function(){
+        this.saveinfourl="http://localhost:4000"+"/searchinfo";
+        var obj={};
+        obj.id=this.iid;
+        this.searchinfoparam=obj;
+        this.$.searchinfoajax.generateRequest();
+      },
+      searchinfoResponse:function(e){
+        var arr=e.detail.response.returnval;
+        this.info=arr;
+        this.iid=arr[0].Item_ID;
+        this.iname=arr[0].Item_Name;
+        //this.itype=arr[0].Item_Type;
+        this.selectedtype=arr[0].Item_Type;
+      //alert(e.detail.response.returnval);
+      //  alert(JSON.stringify(searchdata));
+    },
+
+
+    });
+</script>
+
+</dom-module>

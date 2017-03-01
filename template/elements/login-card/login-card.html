@@ -1,0 +1,143 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/paper-button/paper-button.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="..\..\bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="..\..\bower_components/paper-card/paper-card.html">
+<link rel="import" href="..\..\bower_components/gold-password-input/gold-password-input.html">
+
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<dom-module id="login-card">
+<template >
+
+ <style include="Admin-LTE"></style>
+ <style is="custom-style" include="bootstrap-min"></style>
+ <style is="custom-style" include="blue-card"></style>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+ <div class="login-box">
+ <paper-card>
+  <div class="login-logo">
+    <a href="../../index2.html"><b>Admin</b> S R G </a>
+  </div>
+  <!-- /.login-logo -->
+
+  <div class="login-box-body">
+    <p class="login-box-msg">Sign in to start your session</p>
+
+      <div class="form-group has-feedback">
+
+       <paper-input label="Email Address" value="{{email}}"></paper-input>
+
+      </div>
+      <div class="form-group has-feedback">
+        <gold-password-input reveal  minlength="6" maxlength="24" label="Password" value="{{password}}"></gold-password-input>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox"> Remember Me
+            </label>
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+         <!-- <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>-->
+          <paper-button on-click="SimpleFnSave"  class="btn btn-primary btn-block btn-flat">Login</paper-button>
+        </div>
+        <!-- /.col -->
+      </div>
+
+
+    <div class="social-auth-links text-center">
+      <p>- OR -</p>
+      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
+        Facebook</a>
+      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
+        Google+</a>
+    </div>
+    <!-- /.social-auth-links -->
+
+    <a href="#">I forgot my password</a><br>
+    <a href="register.html" class="text-center">Register a new membership</a>
+
+  </div>
+  <!-- /.login-box-body -->
+  </paper-card>
+</div>
+<!-- /.login-box -->
+ <!--<iron-pages selected="{{page}}" attr-for-selected="data-category">
+    <section data-category="sendsimple-card">
+      <sendsimple-card></sendsimple-card>
+    </section>
+    <section data-category="add-card">
+      <add-card></add-card>
+    </section>
+	</iron-pages>-->
+
+
+<!-- jQ</template>uery 2.2.3 -->
+<iron-ajax
+        method="post"
+        id="simplecardajax"
+        url="{{login_cardinfourl}}"
+        params="{{saveinfoparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="simpleinfoResponse"
+        debounce-duration="300"
+        >
+
+</template>
+
+
+
+
+
+<script>
+  Polymer({
+      is: 'login-card',
+
+
+	   SimpleFnSave:function(){
+
+        this.login_cardinfourl="http://localhost:4000"+"/simplesaveinfo";
+        var obj={};
+        obj.email=this.email;
+        obj.password=this.password;
+
+        this.saveinfoparam=obj;
+        this.$.simplecardajax.generateRequest();
+      },
+      simpleinfoResponse:function(e){
+        //alert(e.detail.response.returnval);
+
+		if(e.detail.response.returnval=='matching!')
+		 document.querySelector('app-page').page='home-page';
+		 else
+		 alert('Invalid user');
+      },
+
+
+	  //SimpleFnSave: function(){
+		   <!--this.page = "sendsimple-card";-->
+		   //document.querySelector('app-page').page='home-page';
+		  //alert(2);
+	 // }
+
+  });
+</script>
+
+</dom-module>
